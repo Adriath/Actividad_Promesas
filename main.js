@@ -1,3 +1,8 @@
+/* Pegar en el navegador para visualizar el archivo XML:
+
+https://api.openweathermap.org/data/2.5/weather?q=Galapagar&appid=86d830bb22abc9b1b3fe4fb21a030040&units=metric&mode=xml
+*/
+
 let appid = "86d830bb22abc9b1b3fe4fb21a030040" ;
 let urlWeather ="";
 
