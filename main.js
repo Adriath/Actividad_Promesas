@@ -5,7 +5,6 @@ https://api.openweathermap.org/data/2.5/weather?q=Galapagar&appid=86d830bb22abc9
 
 let appid = "86d830bb22abc9b1b3fe4fb21a030040" ;
 let urlWeather ="";
-let primeraVez = true ; // Esta variabe sirve para distinguir la primera vez de las demás en caso de que se pulse el botón con el campo en blanco.
 
 document.getElementById("botonTiempo").addEventListener("click", () => {
     cargaCiudad()
@@ -19,6 +18,8 @@ document.getElementById("botonTiempo").addEventListener("click", () => {
 
 function cargaCiudad() {
     
+  const promesa = new Promise((resolve, reject) => {
+      
     let btnCiudad = document.getElementById("ciudad") ;
     let ciudad = btnCiudad.value ;
 
@@ -33,36 +34,21 @@ function cargaCiudad() {
             if (this.status == 200)
                 // Si la respuesta es correcta
             { 
-                primeraVez = false ; // Deja de ser la primera vez
-                cargarXML(this) ;
+                resolve(this) ;
             }
             else
                 // Si la respuesta es incorrecta
             { 
-                if (primeraVez)
-                    // La primera vez mostrará un mensaje de error específico
-                {
-                    document.getElementById("error").innerHTML = "Debes introducir una ciudad" ; // Muestra el error
-                    
-                    if (ciudad.trim().length !== 0)
-                        // Si se introduce una ciudad incorrecta después de haber dado al botón la primera vez (con el cambpo en blanco)...
-                    {
-                        primeraVez = false ; // ... cambiará la variable primeraVez a false para que muestre el siguiente tipo de error
-                    }
-                }
-                else
-                    // La segunda vez y sucesivas mostrará el siguiente tipo de error
-                {
-                    document.getElementById("demo").innerHTML = "" ; // Limpia la tabla
-                    document.getElementById("error").innerHTML = "Ciudad no encontrada" ; // Muestra el error
-                }
+                reject() ;
             }
         }
     } ;
 
     xhr.open("GET", urlWeather, true) ;
     xhr.send() ;
+  }) ;
 
+  return promesa ;
 }
 
 function cargarXML(xml) {
