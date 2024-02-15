@@ -7,13 +7,20 @@ let appid = "86d830bb22abc9b1b3fe4fb21a030040" ;
 let urlWeather ="";
 let primeraVez = true ; // Esta variabe sirve para distinguir la primera vez de las demás en caso de que se pulse el botón con el campo en blanco.
 
-document.getElementById("botonTiempo").addEventListener("click", cargaCiudad) ;
+document.getElementById("botonTiempo").addEventListener("click", () => {
+    cargaCiudad()
+        .then(cargarXML)
+        .catch(() => {
+            document.getElementById("demo").innerHTML = "" ; // Limpia la tabla
+            document.getElementById("error").innerHTML = "Ciudad no encontrada" ; // Muestra el error
+        })
+}) ;
 
 
 function cargaCiudad() {
     
     let btnCiudad = document.getElementById("ciudad") ;
-    ciudad = btnCiudad.value ;
+    let ciudad = btnCiudad.value ;
 
     urlWeather =`https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${appid}&units=metric&mode=xml`;
 
@@ -32,7 +39,6 @@ function cargaCiudad() {
             else
                 // Si la respuesta es incorrecta
             { 
-                
                 if (primeraVez)
                     // La primera vez mostrará un mensaje de error específico
                 {
@@ -56,6 +62,7 @@ function cargaCiudad() {
 
     xhr.open("GET", urlWeather, true) ;
     xhr.send() ;
+
 }
 
 function cargarXML(xml) {
